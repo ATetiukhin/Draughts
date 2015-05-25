@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/background"
+              android:configChanges="orientation|screenSize"
+              android:orientation="vertical"
+              android:layout_gravity="center"
+              android:paddingTop="100dip"
+              tools:context=".MainActivity" >
+
+    <TextView
+            android:text="@string/app_name"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="25dip"
+            android:textSize="24.5sp" />
+
+    <Button
+            android:id="@+id/russian_checkers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_gravity="center"
+            android:text="@string/russian_draughts" />
+
+    <Button
+            android:id="@+id/international_draughts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_gravity="center"
+            android:text="@string/international_draughts" />
+
+    <Button
+            android:id="@+id/load_saved_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_gravity="center"
+            android:text="@string/load_saved_game" />
+
+    <Button
+            android:id="@+id/options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_gravity="center"
+            android:text="@string/options" />
+
+</LinearLayout>
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Draughts</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="russian_draughts">Russian draughts</string>
+    <string name="international_draughts">International draughts</string>
+    <string name="load_saved_game">Load Saved Game</string>
+    <string name="options">Options</string>
+
+    <string name="quit">Quit</string>
+
+</resources>

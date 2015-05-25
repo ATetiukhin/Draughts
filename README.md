@@ -1,1 +1,1 @@
-# Russian_draughts
+# Draughts
