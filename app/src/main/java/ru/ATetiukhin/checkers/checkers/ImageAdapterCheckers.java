@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import ru.ATetiukhin.checkers.Activity.CheckerBoard;
 import ru.ATetiukhin.checkers.R;
 
 import java.util.ArrayList;

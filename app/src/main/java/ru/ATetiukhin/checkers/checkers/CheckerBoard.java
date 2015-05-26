@@ -1,7 +1,7 @@
-package ru.ATetiukhin.checkers.Activity;
+package ru.ATetiukhin.checkers.checkers;
 
 import java.util.ArrayList;
-import static ru.ATetiukhin.checkers.Activity.CheckerBoard.Piece.*;
+import static ru.ATetiukhin.checkers.checkers.CheckerBoard.Piece.*;
 
 public class CheckerBoard {
     public enum Piece {
@@ -16,6 +16,11 @@ public class CheckerBoard {
 
         public boolean isCorrectCage() {
             return currentMoveCheckers == castPiece();
+        }
+
+        public boolean isOpposite() {
+            return this != BLANK_FIELD && this != FORBIDDEN_FIELD &&
+                    this.castPiece() != Piece.getCurrentMoveCheckers();
         }
 
         public static Piece getCurrentMoveCheckers() {
@@ -34,7 +39,7 @@ public class CheckerBoard {
             }
         }
 
-        public Piece castPiece() {
+        private Piece castPiece() {
             if (this == LIGHT_CHECKER || this == LIGHT_KING) {
                 return LIGHT_CHECKER;
             } else if (this == DARK_CHECKER || this == DARK_KING) {
@@ -48,7 +53,7 @@ public class CheckerBoard {
     protected ArrayList<Piece> mDataValues;
     protected int mCountCages = 0;
     protected int mActualCage = 0;
-    protected int indexChageCage = -1;
+    protected int indexChangeCage = -1;
     public boolean checkerSelected = false;
 
     public CheckerBoard(int countCages) {
@@ -76,19 +81,18 @@ public class CheckerBoard {
         boolean isCaptureChecker = isCaptureChecker(position);
         if (mDataValues.get(position) == BLANK_FIELD && (isMovePiece(position) || isCaptureChecker)) {
             if (isCaptureChecker) {
-                mDataValues.set(indexChageCage, BLANK_FIELD);
+                mDataValues.set(indexChangeCage, BLANK_FIELD);
             }
 
             mDataValues.set(mActualCage, BLANK_FIELD);
             mDataValues.set(position, getCurrentMoveCheckers());
             mActualCage = position;
 
-            if (isCaptureChecker && check()) {
+            if (isCaptureChecker && isCheckDoubleCapture()) {
                 checkerSelected = true;
             } else {
                 changeChecker();
             }
-            //changeChecker();
         }
     }
 
@@ -140,27 +144,23 @@ public class CheckerBoard {
     }
 
     protected boolean isCapture(int[] cages,  int position) {
-        if (cages[0] - 2 == position && mDataValues.get(cages[1] - 1) != BLANK_FIELD &&
-                mDataValues.get(cages[1] - 1).castPiece() != Piece.getCurrentMoveCheckers()) {
-            indexChageCage = cages[1] - 1;
+        if (cages[0] - 2 == position && mDataValues.get(cages[1] - 1).isOpposite()) {
+            indexChangeCage = cages[1] - 1;
             return true;
         }
 
-        if (cages[0] + 2 == position && mDataValues.get(cages[1] + 1) != BLANK_FIELD &&
-                mDataValues.get(cages[1] + 1).castPiece() != Piece.getCurrentMoveCheckers()) {
-            indexChageCage = cages[1] + 1;
+        if (cages[0] + 2 == position && mDataValues.get(cages[1] + 1).isOpposite()) {
+            indexChangeCage = cages[1] + 1;
             return true;
         }
 
-        if (cages[2] - 2 == position && mDataValues.get(cages[3] - 1) != BLANK_FIELD &&
-                mDataValues.get(cages[3] - 1).castPiece() != Piece.getCurrentMoveCheckers()) {
-            indexChageCage = cages[3] - 1;
+        if (cages[2] - 2 == position && mDataValues.get(cages[3] - 1).isOpposite()) {
+            indexChangeCage = cages[3] - 1;
             return true;
         }
 
-        if (cages[2] + 2 == position && mDataValues.get(cages[3] + 1) != BLANK_FIELD &&
-                mDataValues.get(cages[3] + 1).castPiece() != Piece.getCurrentMoveCheckers()) {
-            indexChageCage = cages[3] + 1;
+        if (cages[2] + 2 == position && mDataValues.get(cages[3] + 1).isOpposite()) {
+            indexChangeCage = cages[3] + 1;
             return true;
         }
 
@@ -186,7 +186,7 @@ public class CheckerBoard {
         }
     }
 
-    protected boolean check() {
+    protected boolean isCheckDoubleCapture() {
         int[] cages = new int [4];
         cages[0] = mActualCage - 2 * mCountCages;
         cages[1] = mActualCage - mCountCages;
@@ -195,13 +195,13 @@ public class CheckerBoard {
 
         if (cages[0] - 2 > 0 && cages[0] + 2 < mCountCages * mCountCages
                 && cages[1] - 1 > 0 && cages[1] + 1 < mCountCages * mCountCages) {
-            if (cages[1] - 1 != indexChageCage && mDataValues.get(cages[0] - 2) == BLANK_FIELD &&
-                    mDataValues.get(cages[1] - 1).castPiece() != Piece.getCurrentMoveCheckers()) {
+            if (cages[1] - 1 != indexChangeCage && mDataValues.get(cages[0] - 2) == BLANK_FIELD &&
+                    mDataValues.get(cages[1] - 1).isOpposite()) {
                 return true;
             }
 
-            if (cages[1] + 1 != indexChageCage && mDataValues.get(cages[0] + 2) == BLANK_FIELD &&
-                    mDataValues.get(cages[1] + 1).castPiece() != Piece.getCurrentMoveCheckers()) {
+            if (cages[1] + 1 != indexChangeCage && mDataValues.get(cages[0] + 2) == BLANK_FIELD &&
+                mDataValues.get(cages[1] + 1).isOpposite()) {
                 return true;
             }
         }
@@ -209,14 +209,14 @@ public class CheckerBoard {
         if (cages[2] - 2 > 0 && cages[2] + 2 < mCountCages * mCountCages
                 && cages[3] - 1 > 0 && cages[3] + 1 < mCountCages * mCountCages) {
 
-            if (cages[3] - 1 != indexChageCage && mDataValues.get(cages[2] - 2) == BLANK_FIELD &&
-                    mDataValues.get(cages[3] - 1).castPiece() != Piece.getCurrentMoveCheckers()) {
+            if (cages[3] - 1 != indexChangeCage && mDataValues.get(cages[2] - 2) == BLANK_FIELD &&
+                    mDataValues.get(cages[3] - 1).isOpposite()) {
                 return true;
             }
 
-            if (cages[3] + 1 != indexChageCage && mDataValues.get(cages[3] + 2) == BLANK_FIELD &&
-                    mDataValues.get(cages[3] + 1).castPiece() != Piece.getCurrentMoveCheckers()) {
-                indexChageCage = cages[2] + 1;
+            if (cages[3] + 1 != indexChangeCage && mDataValues.get(cages[2] + 2) == BLANK_FIELD &&
+                    mDataValues.get(cages[3] + 1).isOpposite()) {
+                indexChangeCage = cages[2] + 1;
                 return true;
             }
         }
