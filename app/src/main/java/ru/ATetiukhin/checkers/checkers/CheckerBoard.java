@@ -3,6 +3,12 @@ package ru.ATetiukhin.checkers.checkers;
 import java.util.ArrayList;
 import static ru.ATetiukhin.checkers.checkers.CheckerBoard.Piece.*;
 
+/**
+ * This class consists methods that controlling the logic of the game..
+ *
+ * @author  Artyom Tetiukhin
+ * @version 1.0
+ */
 public class CheckerBoard {
     public enum Piece {
         LIGHT_CHECKER,
@@ -32,20 +38,19 @@ public class CheckerBoard {
         }
 
         public static void changeChecker() {
-            if (currentMoveCheckers == LIGHT_CHECKER) {
-                currentMoveCheckers = DARK_CHECKER;
-            } else {
-                currentMoveCheckers =LIGHT_CHECKER;
-            }
+            currentMoveCheckers = currentMoveCheckers == LIGHT_CHECKER ? DARK_CHECKER : LIGHT_CHECKER;
         }
 
         private Piece castPiece() {
-            if (this == LIGHT_CHECKER || this == LIGHT_KING) {
-                return LIGHT_CHECKER;
-            } else if (this == DARK_CHECKER || this == DARK_KING) {
-                return DARK_CHECKER;
-            } else {
-                return this;
+            switch (this) {
+                case LIGHT_CHECKER:
+                case LIGHT_KING:
+                    return LIGHT_CHECKER;
+                case DARK_CHECKER:
+                case DARK_KING:
+                    return DARK_CHECKER;
+                default:
+                    return this;
             }
         }
     }
@@ -76,17 +81,27 @@ public class CheckerBoard {
         mActualCage = position;
     }
 
+    public int getActualCage() {
+        return mActualCage;
+    }
+
     public void setMovePiece(int position) {
         checkerSelected = false;
         boolean isCaptureChecker = isCaptureChecker(position);
-        if (mDataValues.get(position) == BLANK_FIELD && (isMovePiece(position) || isCaptureChecker)) {
+        if (mDataValues.get(position) == BLANK_FIELD && (isCaptureChecker || isMovePiece(position))) {
             if (isCaptureChecker) {
                 mDataValues.set(indexChangeCage, BLANK_FIELD);
             }
 
+            mDataValues.set(position, mDataValues.get(mActualCage));
             mDataValues.set(mActualCage, BLANK_FIELD);
-            mDataValues.set(position, getCurrentMoveCheckers());
             mActualCage = position;
+
+            if (position < mCountCages  && mDataValues.get(position) == LIGHT_CHECKER) {
+                mDataValues.set(position, LIGHT_KING);
+            } else if (position >= mCountCages * (mCountCages - 1) && mDataValues.get(position) == DARK_CHECKER) {
+                mDataValues.set(position, DARK_KING);
+            }
 
             if (isCaptureChecker && isCheckDoubleCapture()) {
                 checkerSelected = true;
@@ -95,7 +110,6 @@ public class CheckerBoard {
             }
         }
     }
-
 
     protected void initBoard() {
         initChecker();
@@ -135,9 +149,9 @@ public class CheckerBoard {
                 cages[3] = mActualCage - mCountCages;
                 return isCapture(cages, position);
             case LIGHT_KING:
-                return true;
+                return false;
             case DARK_KING:
-                return true;
+                return false;
             default:
                 throw new Error();
         }
@@ -167,7 +181,6 @@ public class CheckerBoard {
         return false;
     }
 
-
     protected boolean isMovePiece(int position) {
         int cage;
         switch (mDataValues.get(mActualCage)) {
@@ -178,9 +191,19 @@ public class CheckerBoard {
                 cage = mActualCage + mCountCages;
                 return cage + 1 == position || cage - 1 == position;
             case LIGHT_KING:
-                return true;
             case DARK_KING:
-                return true;
+//                int n = (mActualCage / mCountCages - position / mCountCages);
+//                int m = (mActualCage % mCountCages - position % mCountCages);
+//                if (Math.abs(n) == Math.abs(m)) {
+//                    int k = n / m;
+//                    for (int i = 1, size = Math.abs(n); i < size; ++i ) {
+//                        if (mDataValues.get(i * (mCountCages + k) + mActualCage) != BLANK_FIELD) {
+//                            return false;
+//                        }
+//                    }
+//                    return true;
+//                }
+                return false;
             default:
                 throw new Error();
         }
@@ -193,34 +216,35 @@ public class CheckerBoard {
         cages[2] = mActualCage + 2 * mCountCages;
         cages[3] = mActualCage + mCountCages;
 
-        if (cages[0] - 2 > 0 && cages[0] + 2 < mCountCages * mCountCages
-                && cages[1] - 1 > 0 && cages[1] + 1 < mCountCages * mCountCages) {
-            if (cages[1] - 1 != indexChangeCage && mDataValues.get(cages[0] - 2) == BLANK_FIELD &&
-                    mDataValues.get(cages[1] - 1).isOpposite()) {
-                return true;
-            }
-
-            if (cages[1] + 1 != indexChangeCage && mDataValues.get(cages[0] + 2) == BLANK_FIELD &&
-                mDataValues.get(cages[1] + 1).isOpposite()) {
-                return true;
-            }
+        if (checkNumbers(cages[0] - 2, cages[1] - 1)
+                && mDataValues.get(cages[0] - 2) == BLANK_FIELD
+                && mDataValues.get(cages[1] - 1).isOpposite()) {
+            return true;
         }
 
-        if (cages[2] - 2 > 0 && cages[2] + 2 < mCountCages * mCountCages
-                && cages[3] - 1 > 0 && cages[3] + 1 < mCountCages * mCountCages) {
+        if (checkNumbers(cages[0] + 2, cages[1] + 1)
+                && mDataValues.get(cages[0] + 2) == BLANK_FIELD
+                && mDataValues.get(cages[1] + 1).isOpposite()) {
+            return true;
+        }
 
-            if (cages[3] - 1 != indexChangeCage && mDataValues.get(cages[2] - 2) == BLANK_FIELD &&
-                    mDataValues.get(cages[3] - 1).isOpposite()) {
-                return true;
-            }
+        if (checkNumbers(cages[2] - 2, cages[3] - 1)
+                && mDataValues.get(cages[2] - 2) == BLANK_FIELD
+                && mDataValues.get(cages[3] - 1).isOpposite()) {
+            return true;
+        }
 
-            if (cages[3] + 1 != indexChangeCage && mDataValues.get(cages[2] + 2) == BLANK_FIELD &&
-                    mDataValues.get(cages[3] + 1).isOpposite()) {
-                indexChangeCage = cages[2] + 1;
-                return true;
-            }
+        if (checkNumbers(cages[2] + 2, cages[3] + 1)
+                && mDataValues.get(cages[2] + 2) == BLANK_FIELD
+                && mDataValues.get(cages[3] + 1).isOpposite()) {
+            return true;
         }
 
         return false;
+    }
+
+    private boolean checkNumbers(int first, int second) {
+        return first > 0 && first < mCountCages * mCountCages &&
+                second > 0 && second < mCountCages * mCountCages;
     }
 }

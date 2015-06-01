@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 import ru.ATetiukhin.checkers.R;
 import ru.ATetiukhin.checkers.checkers.ImageAdapterBoard;
 import ru.ATetiukhin.checkers.checkers.ImageAdapterCheckers;

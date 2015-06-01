@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <color name="background_selected_checker">#80f7ff02</color>
 
     <color name="background">#3500ffff</color>
-    <color name="trans">#00000000 </color>
 
 </resources>

@@ -11,7 +11,13 @@ import ru.ATetiukhin.checkers.R;
 
 import java.util.ArrayList;
 
-public class ImageAdapterBoard extends BaseAdapter {
+/**
+ * This class consists methods that controlling resources.
+ *
+ * @author  Artyom Tetiukhin
+ * @version 1.0
+ */
+class ImageAdapterBoard extends BaseAdapter {
     private Context mContext;
     private ArrayList<Bitmap> mThumbIds;
     private int mCountCages;
@@ -23,8 +29,8 @@ public class ImageAdapterBoard extends BaseAdapter {
         int height = width;
 
         Integer[] thumbIds = {
-                R.drawable.fondclair,
-                R.drawable.fondfonce,
+                R.drawable.background_light_wood,
+                R.drawable.background_dark_wood,
         };
 
         mThumbIds = new ArrayList<Bitmap>(thumbIds.length);

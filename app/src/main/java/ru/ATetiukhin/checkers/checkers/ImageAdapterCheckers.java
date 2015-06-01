@@ -11,6 +11,12 @@ import ru.ATetiukhin.checkers.R;
 
 import java.util.ArrayList;
 
+/**
+ * This class consists methods that controlling resources.
+ *
+ * @author  Artyom Tetiukhin
+ * @version 1.0
+ */
 public class ImageAdapterCheckers extends BaseAdapter {
     private Context mContext;
     private ArrayList<Bitmap> mThumbIds;
@@ -22,9 +28,11 @@ public class ImageAdapterCheckers extends BaseAdapter {
         int width = w / countCages;
         int height = width;
 
-        Integer[] thumbIds = {
-                R.drawable.pion_blanc,
-                R.drawable.pion_bleu,
+        Integer[] thumbIds = new Integer[]{
+                R.drawable.pawn_wood_3d_beige,
+                R.drawable.pawn_wood_3d_black,
+                R.drawable.queen_wood_3d_beige,
+                R.drawable.queen_wood_3d_black,
                 R.drawable.blank,
         };
 
@@ -55,9 +63,21 @@ public class ImageAdapterCheckers extends BaseAdapter {
             case DARK_CHECKER:
                 imageView.setImageBitmap(mThumbIds.get(1));
                 break;
-            default:
+            case LIGHT_KING:
                 imageView.setImageBitmap(mThumbIds.get(2));
                 break;
+            case DARK_KING:
+                imageView.setImageBitmap(mThumbIds.get(3));
+                break;
+            default:
+                imageView.setImageBitmap(mThumbIds.get(4));
+                break;
+        }
+
+        if (board.checkerSelected && position == board.getActualCage()) {
+            imageView.setBackgroundColor(R.color.background_selected_checker);
+        } else {
+            imageView.setBackground(null);
         }
 
         return imageView;
@@ -68,7 +88,6 @@ public class ImageAdapterCheckers extends BaseAdapter {
             board.setMovePiece(position);
         } else {
             board.checkerSelected(position);
-            //board.isAdditionalCapture();
         }
     }
 
