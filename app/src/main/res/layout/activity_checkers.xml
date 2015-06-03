@@ -1,23 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background"
-        android:configChanges="orientation|screenSize"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background"
+    android:configChanges="orientation|screenSize"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <GridView
+        <GridView
             android:id="@+id/gridViewBoard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    </GridView>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numColumns="8">
+        </GridView>
 
-    <GridView
+        <GridView
             android:id="@+id/gridViewCheckers"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    </GridView>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numColumns="8">
+        </GridView>
+    </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/EditText01"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="JavaCodeGeeks" >
+        </EditText>
+
+        <Button
+            android:id="@+id/myButton"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:onClick="onClick"
+            android:text="Send" >
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>

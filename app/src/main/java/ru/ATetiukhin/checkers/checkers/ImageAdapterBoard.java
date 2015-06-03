@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @author  Artyom Tetiukhin
  * @version 1.0
  */
-class ImageAdapterBoard extends BaseAdapter {
+public class ImageAdapterBoard extends BaseAdapter {
     private Context mContext;
     private ArrayList<Bitmap> mThumbIds;
     private int mCountCages;
